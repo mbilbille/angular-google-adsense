@@ -5,7 +5,7 @@
     angular.module('angular-google-adsense', []).
 
     service('Adsense', [function(){
-        this.url = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js';
+        this.url = '//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js';
         this.isAlreadyLoaded = false;
     }]).
 
@@ -37,7 +37,12 @@
                     return;
                 }
 
-                if (!Adsense.isAlreadyLoaded) {
+                var adsenseAlreadyLoaded = function(){
+                    if(Adsense.isAlreadyLoaded) return true;
+                    return document.querySelector('script[src="' + Adsense.url + '"]') != null;
+                }
+
+                if (!adsenseAlreadyLoaded()) {
                     var s = document.createElement('script');
                     s.type = 'text/javascript';
                     s.src = Adsense.url;
